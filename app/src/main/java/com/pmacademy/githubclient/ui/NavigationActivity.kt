@@ -25,9 +25,9 @@ class NavigationActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //     create btn and set click
-        binding.btn.setOnClickListener {
-            startGitHubLogin()
-        }
+//        binding.btn.setOnClickListener {
+//            startGitHubLogin()
+//        }
     }
 
     private val sharedPreferences by lazy {
@@ -59,14 +59,5 @@ class NavigationActivity : AppCompatActivity() {
 
             Log.d("TAG_11", "user $user $repo $response")
         }
-        fun checkTokenAuto(){
-            if(sharedPreferences.token.isEmpty()){
-
-            }
-            else{
-
-            }
-        }
-
     }
 }
