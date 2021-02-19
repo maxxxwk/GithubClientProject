@@ -16,16 +16,17 @@ import retrofit2.Retrofit
 class GitHubUtils {
     companion object{
         const val clientId = "Iv1.e42a61ea14b6b8ac"
-        const val clientSecret = "f6fc20b1db9b9f23b3b27d35c53e96edb61fa2ce"
+        const val clientSecret = "1f7fb0a17bba8a80d04da59321696d443f3292ec"
         const val redirectUrl = "githubclientproject://callback"
         const val scopes = "repo, user"
         const val schema = "https"
         const val host = "github.com"
     }
 
-    private val converterFactory: Converter.Factory =
+    private val converterFactory: Converter.Factory by lazy {
         Json { ignoreUnknownKeys = true }
-        .asConverterFactory("application/json".toMediaType())
+            .asConverterFactory("application/json".toMediaType())
+    }
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -62,11 +63,15 @@ class GitHubUtils {
         return uri.getQueryParameter("code")
     }
 
-    suspend fun getAccesToken(code: String): AccessToken {
-        return githubService.getAccessToken(clientId, clientSecret, code)
+    suspend fun getAccessToken(code: String): AccessToken {
+        return githubService.getAccessToken(clientId, clientSecret,code)
     }
 
     suspend fun getUser(token: String): User {
         return githubService.getUser(token)
     }
+    suspend fun getRepo(token: String):User{
+        return githubService.getRepos(token)
+    }
+
 }

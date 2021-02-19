@@ -1,5 +1,6 @@
 package com.pmacademy.githubclient.data
 
+import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

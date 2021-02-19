@@ -9,9 +9,11 @@ import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.preferences.SharedPref
 import com.pmacademy.githubclient.databinding.ActivityNavigationBinding
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class NavigationActivity : AppCompatActivity() {
+
 
     val navigator: Navigator by lazy {
         Navigator(supportFragmentManager, R.id.container)
@@ -23,26 +25,8 @@ class NavigationActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //     create btn and set click
-//        binding.btn.setOnClickListener {
-//            startGitHubLogin()
-//        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        navigator.showAuthFragment()
-        val code = githubUtils.getCodeFromUri(uri = intent.data)
-        code ?: return
-
-
-        //Get all info about user
-        GlobalScope.launch {
-            val response = githubUtils.getAccesToken(code)
-            val token = "${response.tokenType} ${response.accessToken}"
-            sharedPreferences.token = token
-            val user = githubUtils.getUser(token)
-
-            Log.d("TAG_11", "user $user")
+        binding.btn.setOnClickListener {
+            startGitHubLogin()
         }
     }
 
@@ -57,5 +41,32 @@ class NavigationActivity : AppCompatActivity() {
     private fun startGitHubLogin() {
         val authIntent = Intent(Intent.ACTION_VIEW, githubUtils.buildAuthGitHubUrl())
         startActivity(authIntent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigator.showAuthFragment()
+        val code = githubUtils.getCodeFromUri(uri = intent.data)
+        code ?: return
+
+        //Get all info about user
+        GlobalScope.launch {
+            val response = githubUtils.getAccessToken(code)
+            val token = "${response.tokenType} ${response.accessToken}"
+            sharedPreferences.token = response.tokenType
+            val user = githubUtils.getUser(token)
+            val repo = githubUtils.getRepo(token)
+
+            Log.d("TAG_11", "user $user $repo $response")
+        }
+        fun checkTokenAuto(){
+            if(sharedPreferences.token.isEmpty()){
+
+            }
+            else{
+
+            }
+        }
+
     }
 }
