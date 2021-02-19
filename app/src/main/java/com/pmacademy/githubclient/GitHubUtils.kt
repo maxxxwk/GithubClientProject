@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 
 class GitHubUtils {
     companion object{
-        const val clientId = "Iv1.9adf0bf789a874bc"
+        const val clientId = "Iv1.e42a61ea14b6b8ac"
         const val clientSecret = "f6fc20b1db9b9f23b3b27d35c53e96edb61fa2ce"
         const val redirectUrl = "githubclientproject://callback"
         const val scopes = "repo, user"

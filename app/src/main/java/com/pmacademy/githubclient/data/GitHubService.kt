@@ -19,4 +19,8 @@ interface GitHubService {
     @Headers("Accept: application/vnd.github.v3+json")
     @GET("/repositories")
     suspend fun getRepos(@Header("Authorization") auth: String): User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("")
+    suspend fun getAvatarrs(@Header("Authorization")auth: Int):User
 }

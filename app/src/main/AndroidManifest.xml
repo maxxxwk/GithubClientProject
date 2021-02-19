@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="callback"
-                    android:scheme="githubclientproject" />
+                    android:scheme="githubclientproject"
+                    android:host="callback" />
             </intent-filter>
         </activity>
     </application>
