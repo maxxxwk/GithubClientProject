@@ -17,10 +17,10 @@ interface GitHubService {
     suspend fun getUser(@Header("Authorization") auth: String): User
 
     @Headers("Accept: application/vnd.github.v3+json")
-    @GET("/repositories")
+    @GET("/user/repos")
     suspend fun getRepos(@Header("Authorization") auth: String): User
 
     @Headers("Accept: application/vnd.github.v3+json")
-    @GET("")
-    suspend fun getAvatarrs(@Header("Authorization")auth: Int):User
+    @GET("/avatar_url")
+    suspend fun getAvatars(@Header("Authorization")auth: String):User
 }
