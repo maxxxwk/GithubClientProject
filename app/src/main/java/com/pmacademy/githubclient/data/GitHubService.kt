@@ -23,4 +23,16 @@ interface GitHubService {
     @Headers("Accept: application/vnd.github.v3+json")
     @GET("/avatar_url")
     suspend fun getAvatars(@Header("Authorization")auth: String):User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/repos/{owner}/{repo}/contributors")
+    suspend fun getContributors (@Header("Authorization")auth: String):User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/emojis")
+    suspend fun getEmojis (@Header("Authorization")auth: String):User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/{owner}/{repo}/master/README.md")
+    suspend fun getReadme(@Header("Authorization")auth: String):String
 }

@@ -50,14 +50,13 @@ class NavigationActivity : AppCompatActivity() {
         code ?: return
 
         //Get all info about user
-        GlobalScope.launch {
-            val response = githubUtils.getAccessToken(code)
-            val token = "${response.tokenType} ${response.accessToken}"
-            sharedPreferences.token = response.tokenType
-            val user = githubUtils.getUser(token)
-            val repo = githubUtils.getRepo(token)
-
-            Log.d("TAG_11", "user $user $repo $response")
-        }
+//        GlobalScope.launch {
+//            val response = githubUtils.getAccessToken(code)
+//            val token = "${response.tokenType} ${response.accessToken}"
+//            sharedPreferences.token = response.tokenType
+//            val user = githubUtils.getUser(token)
+//            val repo = githubUtils.getRepo(token)
+//
+//        }
     }
 }
