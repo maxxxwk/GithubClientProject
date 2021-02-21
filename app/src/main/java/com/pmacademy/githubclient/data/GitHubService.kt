@@ -17,7 +17,7 @@ interface GitHubService {
     suspend fun getUser(@Header("Authorization") auth: String): User
 
     @Headers("Accept: application/vnd.github.v3+json")
-    @GET("/user/repos")
+    @GET("/repos/{owner}/{repo}")
     suspend fun getRepos(@Header("Authorization") auth: String): User
 
     @Headers("Accept: application/vnd.github.v3+json")
@@ -35,4 +35,16 @@ interface GitHubService {
     @Headers("Accept: application/vnd.github.v3+json")
     @GET("/{owner}/{repo}/master/README.md")
     suspend fun getReadme(@Header("Authorization")auth: String):String
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/repos/{owner}/{repo}/pulls")
+    suspend fun getPulls(@Header("Authorization")auth: String):User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/orgs/{org}/packages/{package_type}/{package_name}")
+    suspend fun getPackeges(@Header("Authorization")auth: String):User
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/orgs/{org}/issues")
+    suspend fun getIssues(@Header("Authorization")auth: String):User
 }
