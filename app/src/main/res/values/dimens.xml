@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fragment_root_padding">32dp</dimen>
+    <dimen name="user_avatar_width">80dp</dimen>
+    <dimen name="user_avatar_height">80dp</dimen>
+    <dimen name="user_name_text_textSize">24sp</dimen>
+    <dimen name="repositories_title_textSize">24sp</dimen>
+    <dimen name="repositories_title_marginTop">32dp</dimen>
+    <dimen name="repositories_recycler_view_marginTop">16dp</dimen>
+    <dimen name="repository_item_padding">16dp</dimen>
+    <dimen name="repository_item_name_textSize">24sp</dimen>
+    <dimen name="repository_item_description_textSize">16sp</dimen>
+</resources>

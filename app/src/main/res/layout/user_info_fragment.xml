@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/fragment_root_padding">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="@dimen/user_avatar_width"
+        android:layout_height="@dimen/user_avatar_height"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ivAvatar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/user_name_text_textSize"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
+        app:layout_constraintLeft_toRightOf="@id/ivAvatar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivAvatar"
+        tools:text="User name" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="ivAvatar, tvUserName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRepositoriesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/repositories_title_marginTop"
+        android:text="@string/repositories_title_text"
+        android:textSize="@dimen/repositories_title_textSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRepositories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/repositories_recycler_view_marginTop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoriesTitle" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/userInfoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvUserName, ivAvatar, barrier, tvRepositoriesTitle, rvRepositories" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,10 @@
-package com.pmacademy.githubclient.data.preferences
+package com.pmacademy.githubclient.utils
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class SharedePreferencesDelegate <T>(
+class SharedPreferencesDelegate <T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
     private val defValue: T,
