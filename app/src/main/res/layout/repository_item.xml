@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/repository_item_padding">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRepositoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/repository_item_name_textSize"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvRepositoryDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Repository name" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRepositoryDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/repository_item_description_textSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
+        tools:text="Repository description" />
+</androidx.constraintlayout.widget.ConstraintLayout>

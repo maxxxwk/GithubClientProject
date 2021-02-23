@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Github Client</string>
+    <string name="repositories_title_text">Repositories</string>
 </resources>
