@@ -76,6 +76,12 @@ class UserInfoFragment private constructor() : BaseFragment(R.layout.user_info_f
             pbLoading.visibility = View.VISIBLE
         }
     }
+    private fun hideLoading() {
+        with(binding) {
+            userInfoGroup.visibility = View.VISIBLE
+            pbLoading.visibility = View.GONE
+        }
+    }
 
     private fun hideLoading() {
         with(binding) {
