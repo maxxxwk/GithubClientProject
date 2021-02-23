@@ -1,6 +1,6 @@
 package com.pmacademy.githubclient.data
 
-import com.pmacademy.githubclient.data.models.AccessToken
+import com.pmacademy.githubclient.data.models.AuthToken
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -15,5 +15,5 @@ interface GithubAuthService {
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("code") code: String,
-    ): Call<AccessToken>
+    ): Call<AuthToken>
 }

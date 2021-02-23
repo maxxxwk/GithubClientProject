@@ -2,8 +2,8 @@ package com.pmacademy.githubclient.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class AccessToken(
+data class AuthToken(
     @SerializedName("access_token") val accessToken: String,
-    @SerializedName("scope") val scope: String,
+    @SerializedName("refresh_token") val refreshToken: String,
     @SerializedName("token_type") val tokenType: String
 )

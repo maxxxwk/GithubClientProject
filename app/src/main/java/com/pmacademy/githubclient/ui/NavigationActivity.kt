@@ -6,7 +6,7 @@ import android.util.Log
 import com.pmacademy.githubclient.App
 import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.GithubAuthService
-import com.pmacademy.githubclient.data.models.AccessToken
+import com.pmacademy.githubclient.data.models.AuthToken
 import com.pmacademy.githubclient.databinding.ActivityNavigationBinding
 import com.pmacademy.githubclient.utils.GithubUtils
 import com.pmacademy.githubclient.utils.SharedPref
@@ -38,15 +38,15 @@ class NavigationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val code = GithubUtils.getCodeFromUri(intent.data)
-        if (code == null && sharedPref.token == "") {
+        if (code == null && sharedPref.accessToken == "") {
             navigator.showAuthFragment()
         } else {
             code?.let { code ->
                 Thread {
-                    getAccessToken(code)?.let { accessToken ->
-
-                        Log.d("LOG_TAG", accessToken.toString())
-                        sharedPref.token = "${accessToken.tokenType} ${accessToken.accessToken}"
+                    getAuthToken(code)?.let { authToken ->
+                        sharedPref.accessToken = authToken.accessToken
+                        sharedPref.refreshToken = authToken.refreshToken
+                        sharedPref.token_type = authToken.tokenType
                         navigator.showUserInfoFragment()
                     }
                 }.start()
@@ -54,8 +54,12 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAccessToken(code: String): AccessToken? {
-        return githubAuthService.getAccessToken(GithubUtils.clientId, GithubUtils.clientSecret, code)
+    private fun getAuthToken(code: String): AuthToken? {
+        return githubAuthService.getAccessToken(
+            GithubUtils.clientId,
+            GithubUtils.clientSecret,
+            code
+        )
             .execute()
             .body()
     }

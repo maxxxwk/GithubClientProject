@@ -25,7 +25,8 @@ class GithubUserInfoRepository @Inject constructor(
                         return State.Content(UserInfo(user, repositories))
                     }
             }
-            return State.Error(UserInfoError.LOADING_ERROR)
         }
+        return State.Error(UserInfoError.LOADING_ERROR)
     }
+
 }
