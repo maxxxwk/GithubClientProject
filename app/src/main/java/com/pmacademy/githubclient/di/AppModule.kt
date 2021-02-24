@@ -77,4 +77,10 @@ class AppModule(private val context: Context) {
             .create()
     }
 
+    @Provides
+    @Singleton
+    fun provideAuthorizationInterceptor(retrofit: Retrofit): AuthorizationInterceptor {
+        return retrofit.create(AuthorizationInterceptor::class.java)
+    }
+
 }
