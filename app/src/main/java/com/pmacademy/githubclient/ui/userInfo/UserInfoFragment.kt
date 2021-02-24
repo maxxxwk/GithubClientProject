@@ -1,7 +1,6 @@
 package com.pmacademy.githubclient.ui.userInfo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -13,16 +12,15 @@ import com.pmacademy.githubclient.databinding.UserInfoFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.ui.NavigationActivity
 import com.pmacademy.githubclient.ui.State
-import com.pmacademy.githubclient.utils.SharedPref
 import javax.inject.Inject
 
-class UserInfoFragment private constructor() : BaseFragment(R.layout.user_info_fragment) {
+class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
 
-    private lateinit var binding: UserInfoFragmentBinding
-
-    @Inject
-    lateinit var viewModel: UserInfoViewModel
     private val repositoryListAdapter = RepositoryListAdapter()
+    private lateinit var binding: UserInfoFragmentBinding
+    private lateinit var viewModel: UserInfoViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         fun newInstance(): UserInfoFragment {
@@ -35,6 +33,7 @@ class UserInfoFragment private constructor() : BaseFragment(R.layout.user_info_f
         binding = UserInfoFragmentBinding.bind(view)
         setupRepositoryRecyclerView()
         ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
         observeViewModel()
         viewModel.loadUserInfo()
     }
