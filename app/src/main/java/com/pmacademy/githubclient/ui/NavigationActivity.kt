@@ -2,7 +2,6 @@ package com.pmacademy.githubclient.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.pmacademy.githubclient.App
 import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.GithubAuthService
@@ -14,18 +13,14 @@ import javax.inject.Inject
 
 class NavigationActivity : AppCompatActivity() {
 
-
+    private lateinit var binding: ActivityNavigationBinding
     val navigator: Navigator by lazy {
         Navigator(supportFragmentManager, R.id.container)
     }
-    private lateinit var binding: ActivityNavigationBinding
-
     @Inject
     lateinit var sharedPref: SharedPref
-
     @Inject
     lateinit var githubAuthService: GithubAuthService
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +28,6 @@ class NavigationActivity : AppCompatActivity() {
         setContentView(binding.root)
         (application as App).daggerComponent.inject(this)
     }
-
 
     override fun onResume() {
         super.onResume()
