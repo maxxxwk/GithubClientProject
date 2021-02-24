@@ -21,7 +21,7 @@ class UserInfoViewModel @Inject constructor(
         _userInfoStateLiveData.value = State.Loading
         executor.submit {
             _userInfoStateLiveData.postValue(
-                githubUserInfoRepository.getUserInfo("${sharedPref.token_type} ${sharedPref.accessToken}")
+                githubUserInfoRepository.getUserInfo("${sharedPref.tokenType} ${sharedPref.accessToken}")
             )
         }
     }

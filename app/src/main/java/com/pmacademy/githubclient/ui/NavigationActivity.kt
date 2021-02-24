@@ -42,8 +42,7 @@ class NavigationActivity : AppCompatActivity() {
             Thread {
                 getAuthToken(code)?.let { authToken ->
                     sharedPref.accessToken = authToken.accessToken
-                    sharedPref.refreshToken = authToken.refreshToken
-                    sharedPref.token_type = authToken.tokenType
+                    sharedPref.tokenType = authToken.tokenType
                     navigator.showUserInfoFragment()
                 }
             }.start()
