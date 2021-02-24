@@ -12,4 +12,5 @@ interface AppComponent {
 
     fun inject(fragment: NavigationActivity)
     fun inject(fragment: UserInfoFragment)
+
 }

@@ -1,16 +1,17 @@
 package com.pmacademy.githubclient.data
 
+import androidx.lifecycle.MutableLiveData
 import com.pmacademy.githubclient.data.models.Repository
 import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
 import com.pmacademy.githubclient.ui.userInfo.UserInfoError
+import okhttp3.internal.userAgent
 import javax.inject.Inject
 
 class GithubUserInfoRepository @Inject constructor(
     private val githubDataService: GithubDataService
 ) {
-
     fun getUserInfo(authToken: String): State<UserInfo, UserInfoError> {
         var user: User?
         var repositories: List<Repository>?

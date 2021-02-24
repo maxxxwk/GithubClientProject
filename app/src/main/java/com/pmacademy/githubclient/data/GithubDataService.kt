@@ -21,10 +21,6 @@ interface GithubDataService {
         @Path("repo") repo: String
     ): Call<List<User>>
 
-    @GET("/avatar_url")
-    fun getAvatars(@Header("Authorization") auth: String): Call<String>
-
-
     @GET("/emojis")
     fun getEmojis(@Header("Authorization") auth: String): Call<List<Emoji>>
 
