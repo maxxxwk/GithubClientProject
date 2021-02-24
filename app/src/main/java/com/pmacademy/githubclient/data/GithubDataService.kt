@@ -21,11 +21,10 @@ interface GithubDataService {
     ): Call<User>
 
     @GET("/avatar_url")
-     fun getAvatars(@Header("Authorization") auth: String): User
+    fun getAvatars(@Header("Authorization") auth: String): User
 
     @GET("/emojis")
     fun getEmojis(@Header("Authorization") auth: String): User
-
 
     @GET("/{owner}/{repo}/master/README.md")
     fun getReadme(@Header("Authorization") auth: String): String
