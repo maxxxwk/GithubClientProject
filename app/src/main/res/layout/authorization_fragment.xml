@@ -2,15 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/fragment_root_padding">
+    android:layout_height="match_parent">
+
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvAuth"
+        android:id="@+id/tvAuthTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/authorization_title"
+        android:textSize="@dimen/authorization_title_textSize"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/btnAuth"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Authorization"/>
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/authorization_button_marginTop"
+        android:text="@string/authorization_button_text"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/tvAuthTitle"
+        app:layout_constraintRight_toRightOf="@id/tvAuthTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvAuthTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

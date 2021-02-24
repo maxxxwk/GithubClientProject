@@ -20,7 +20,7 @@ class AuthFragment private constructor(): BaseFragment(R.layout.authorization_fr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = AuthorizationFragmentBinding.bind(view)
-        binding.tvAuth.setOnClickListener {
+        binding.btnAuth.setOnClickListener {
             requireContext().startActivity(Intent(
                 Intent.ACTION_VIEW,
                 GithubUtils.buildAuthGitHubUrl()

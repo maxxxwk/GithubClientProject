@@ -83,18 +83,10 @@ class UserInfoFragment private constructor() : BaseFragment(R.layout.user_info_f
         }
     }
 
-    private fun hideLoading() {
-        with(binding) {
-            userInfoGroup.visibility = View.VISIBLE
-            pbLoading.visibility = View.GONE
-        }
-    }
-
     private fun showUserInfo(userInfo: UserInfo) {
         hideLoading()
         with(binding) {
             tvUserName.text = userInfo.user.login
-            tvRepositoriesTitle.text = userInfo.repositories.toString()
             Glide.with(requireContext()).load(userInfo.user.avatar_url).into(ivAvatar)
             repositoryListAdapter.submitList(userInfo.repositories)
         }
