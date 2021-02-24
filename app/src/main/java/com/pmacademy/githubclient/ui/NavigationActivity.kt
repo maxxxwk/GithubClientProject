@@ -38,19 +38,21 @@ class NavigationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val code = GithubUtils.getCodeFromUri(intent.data)
-        if (code == null && sharedPref.accessToken == "") {
-            navigator.showAuthFragment()
-        } else {
-            code?.let { code ->
-                Thread {
-                    getAuthToken(code)?.let { authToken ->
-                        sharedPref.accessToken = authToken.accessToken
-                        sharedPref.refreshToken = authToken.refreshToken
-                        sharedPref.token_type = authToken.tokenType
-                        navigator.showUserInfoFragment()
-                    }
-                }.start()
+        if (code == null) {
+            if (sharedPref.accessToken == "") {
+                navigator.showAuthFragment()
+            } else {
+                navigator.showUserInfoFragment()
             }
+        } else {
+            Thread {
+                getAuthToken(code)?.let { authToken ->
+                    sharedPref.accessToken = authToken.accessToken
+                    sharedPref.refreshToken = authToken.refreshToken
+                    sharedPref.token_type = authToken.tokenType
+                    navigator.showUserInfoFragment()
+                }
+            }.start()
         }
     }
 
@@ -59,8 +61,6 @@ class NavigationActivity : AppCompatActivity() {
             GithubUtils.clientId,
             GithubUtils.clientSecret,
             code
-        )
-            .execute()
-            .body()
+        ).execute().body()
     }
 }

@@ -88,8 +88,10 @@ class UserInfoFragment private constructor() : BaseFragment(R.layout.user_info_f
         hideLoading()
         with(binding) {
             tvUserName.text = userInfo.user.login
-            tvRepositoriesTitle.text = userInfo.repositories.toString()
-            Glide.with(requireContext()).load(userInfo.user.avatar_url).into(ivAvatar)
+            Glide.with(requireContext())
+                .load(userInfo.user.avatar_url)
+                .placeholder(R.drawable.loading_placeholder)
+                .into(ivAvatar)
             repositoryListAdapter.submitList(userInfo.repositories)
         }
     }

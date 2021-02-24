@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Github Client</string>
     <string name="repositories_title_text">Repositories</string>
+    <string name="authorization_title">Authorization</string>
+    <string name="authorization_button_text">Log in</string>
 </resources>
