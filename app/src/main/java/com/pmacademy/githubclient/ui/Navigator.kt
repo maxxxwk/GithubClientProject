@@ -5,12 +5,15 @@ import androidx.fragment.app.FragmentManager
 import com.pmacademy.githubclient.ui.authorization.AuthFragment
 import com.pmacademy.githubclient.ui.userInfo.UserInfoFragment
 
-class Navigator(private val fragmentManager: FragmentManager,
-                @IdRes private val container: Int) {
+class Navigator(
+    private val fragmentManager: FragmentManager,
+    @IdRes private val container: Int
+) {
     companion object {
-        const val AUTH_FRAGMENT = "AUTH_FRAGMENT"
-        const val USER_INFO_FRAGMENT = "USER_INFO_FRAGMENT"
+        private const val USER_INFO_FRAGMENT = "USER_INFO_FRAGMENT"
+        private const val AUTH_FRAGMENT = "AUTH_FRAGMENT"
     }
+
     fun showAuthFragment() {
         fragmentManager.beginTransaction()
             .replace(container, AuthFragment.newInstance())

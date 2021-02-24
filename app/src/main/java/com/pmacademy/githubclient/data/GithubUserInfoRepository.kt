@@ -1,10 +1,10 @@
 package com.pmacademy.githubclient.data
 
 import com.pmacademy.githubclient.data.models.Repository
+import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
 import com.pmacademy.githubclient.ui.userInfo.UserInfoError
-import okhttp3.internal.userAgent
 import javax.inject.Inject
 
 class GithubUserInfoRepository @Inject constructor(
@@ -12,25 +12,34 @@ class GithubUserInfoRepository @Inject constructor(
 ) {
 
     fun getUserInfo(authToken: String): State<UserInfo, UserInfoError> {
+        var user: User?
+        var repositories: List<Repository>?
         githubDataService.getUser(authToken).execute().let { userResponse ->
-            userResponse.body()?.let { user ->
-                githubDataService.getUserRepositories(user.login).execute()
-                    .let { repositoriesResponse ->
-                        val repositories = repositoriesResponse.body() ?: emptyList()
-                        return State.Content(UserInfo(user, repositories))
-                    }
-            }
-            githubDataService.getUserByToken(authToken).execute().let { userResponseByToken ->
-                if (!userResponseByToken.isSuccessful) {
-                    return when (userResponse.code()) {
-                        401 -> State.Error(UserInfoError.UNAUTHORIZED_ERROR)
-                        404 -> State.Error(UserInfoError.NOT_FOUND_ERROR)
-                        else -> State.Error(UserInfoError.LOADING_ERROR)
-                    }
+            if (!userResponse.isSuccessful) {
+                return when (userResponse.code()) {
+                    401 -> State.Error(UserInfoError.UNAUTHORIZED_ERROR)
+                    404 -> State.Error(UserInfoError.NOT_FOUND_ERROR)
+                    else -> State.Error(UserInfoError.LOADING_ERROR)
                 }
             }
-            return State.Error(UserInfoError.LOADING_ERROR)
+            user = userResponse.body()
         }
+        githubDataService.getRepositoriesByToken(authToken).execute().let { repositoriesResponse ->
+            if (!repositoriesResponse.isSuccessful) {
+                return when (repositoriesResponse.code()) {
+                    401 -> State.Error(UserInfoError.UNAUTHORIZED_ERROR)
+                    404 -> State.Error(UserInfoError.NOT_FOUND_ERROR)
+                    else -> State.Error(UserInfoError.LOADING_ERROR)
+                }
+            }
+            repositories = repositoriesResponse.body()
+        }
+        user?.let { user ->
+            repositories?.let { repositories ->
+                return State.Content(UserInfo(user, repositories))
+            }
+        }
+        return State.Error(UserInfoError.LOADING_ERROR)
     }
 
 }
