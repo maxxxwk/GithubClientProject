@@ -53,7 +53,7 @@ interface GithubDataService {
 
     @GET("/search/users")
     fun search(
-        @Query("q") q: String
+        @Query("q") q: Call<List<SearchUser>>
     )
 
 
