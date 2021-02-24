@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.pmacademy.githubclient.data.GithubAuthService
 import com.pmacademy.githubclient.data.GithubDataService
+import com.pmacademy.githubclient.data.interceptors.AuthorizationInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -59,6 +60,7 @@ class AppModule(private val context: Context) {
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(AuthorizationInterceptor())
             .build()
     }
 
