@@ -1,7 +1,6 @@
 package com.pmacademy.githubclient.data
 
-import com.pmacademy.githubclient.data.models.Repository
-import com.pmacademy.githubclient.data.models.User
+import com.pmacademy.githubclient.data.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -26,8 +25,8 @@ interface GithubDataService {
     fun getAvatars(@Header("Authorization") auth: String): Call<String>
 
 
-//    @GET("/emojis")
-//    fun getEmojis(@Header("Authorization") auth: String): User - should return Call<List<Emoji>>
+    @GET("/emojis")
+    fun getEmojis(@Header("Authorization") auth: String): Call<List<Emoji>>
 
 
     @GET("/{owner}/{repo}/master/README.md")
@@ -37,21 +36,44 @@ interface GithubDataService {
         @Path("repo") repo: String
     ): Call<String>
 
-//    @GET("/repos/{owner}/{repo}/pulls")
-//    fun getPulls(
-//        @Header("Authorization") auth: String,
-//        @Path("owner") owner: String,
-//        @Path("repo") repo: String
-//    ): User - should return Call<List<PullRequest>>
+    @GET("/repos/{owner}/{repo}/pulls")
+    fun getPulls(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<List<PullRequest>>
 
-//    @GET("/orgs/{org}/packages/{package_type}/{package_name}")
-//    fun getPackeges(@Header("Authorization") auth: String): User - We don`t need packages......
+    @GET("/search/users")
+    fun search(
+        @Query("q") q: Call<List<SearchUser>>
+    )
 
+    @GET("/repos/{owner}/{repo}/issues")
+    fun getIssues(
+        @Header("Authorization") auth: String,
+        @Path("repo") repo: String,
+        @Path("owner") owner: String
+    ): Call<List<Issue>>
 
-//    @GET("/orgs/{org}/issues")
-//    fun getIssues(
-//        @Header("Authorization") auth: String,
-//        @Path("orgs") orgs: String
-//    ): String - Should return Call<List<Issue>>
+    @GET("/repos/{owner}/{repo}/issues")
+    fun getRepositoryIssues(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<ListRepositoryIssues>
 
+    @GET("/repos/{owner}/{repo}/issues/{issue_number}")
+    fun getRepositoryIssuesDeteils(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<ListRepositoryIssuesDetails>
+
+    @GET("/repos/{owner}/{repo}/issues/comments/{comment_id}")
+    fun getIssueComment(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+        @Path("comment_id") comment_id:Int
+    )
 }

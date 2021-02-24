@@ -17,7 +17,7 @@ class RepositoryListAdapter :
         fun bind(repositoryUIModel: Repository) {
             with(binding) {
                 tvRepositoryName.text = repositoryUIModel.name
-                    tvRepositoryDescription.text = repositoryUIModel.description
+                tvRepositoryDescription.text = repositoryUIModel.description
             }
         }
     }

@@ -41,5 +41,4 @@ class GithubUserInfoRepository @Inject constructor(
         }
         return State.Error(UserInfoError.LOADING_ERROR)
     }
-
 }
