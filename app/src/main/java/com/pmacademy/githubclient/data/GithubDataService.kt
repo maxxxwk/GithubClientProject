@@ -36,14 +36,6 @@ interface GithubDataService {
         @Path("repo") repo: String
     ): Call<String>
 
-
-    @GET("/repos/{owner}/{repo}/issues")
-    fun getIssues(
-        @Header("Authorization") auth: String,
-        @Path("repo") repo: String,
-        @Path("owner") owner: String
-    ): Call<List<Issue>>
-
     @GET("/repos/{owner}/{repo}/pulls")
     fun getPulls(
         @Header("Authorization") auth: String,
@@ -56,5 +48,32 @@ interface GithubDataService {
         @Query("q") q: Call<List<SearchUser>>
     )
 
+    @GET("/repos/{owner}/{repo}/issues")
+    fun getIssues(
+        @Header("Authorization") auth: String,
+        @Path("repo") repo: String,
+        @Path("owner") owner: String
+    ): Call<List<Issue>>
 
+    @GET("/repos/{owner}/{repo}/issues")
+    fun getRepositoryIssues(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<ListRepositoryIssues>
+
+    @GET("/repos/{owner}/{repo}/issues/{issue_number}")
+    fun getRepositoryIssuesDeteils(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<ListRepositoryIssuesDetails>
+
+    @GET("/repos/{owner}/{repo}/issues/comments/{comment_id}")
+    fun getIssueComment(
+        @Header("Authorization") auth: String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+        @Path("comment_id") comment_id:Int
+    )
 }
