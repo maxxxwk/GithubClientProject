@@ -38,14 +38,14 @@ class NavigationActivity : AppCompatActivity() {
             if (sharedPref.accessToken == "") {
                 navigator.showAuthFragment()
             } else {
-                navigator.showUserInfoFragment()
+                navigator.showUserInfoFragment(null)
             }
         } else {
             Thread {
                 getAuthToken(code)?.let { authToken ->
                     sharedPref.accessToken = authToken.accessToken
                     sharedPref.tokenType = authToken.tokenType
-                    navigator.showUserInfoFragment()
+                    navigator.showUserInfoFragment(null)
                 }
             }.start()
         }

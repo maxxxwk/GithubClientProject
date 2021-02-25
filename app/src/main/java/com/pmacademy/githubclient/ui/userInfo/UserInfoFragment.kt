@@ -1,6 +1,7 @@
 package com.pmacademy.githubclient.ui.userInfo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -12,20 +13,28 @@ import com.pmacademy.githubclient.databinding.UserInfoFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.ui.NavigationActivity
 import com.pmacademy.githubclient.ui.State
-import com.pmacademy.githubclient.ui.issueDetails.Error
+import com.pmacademy.githubclient.ui.Error
 import javax.inject.Inject
 
 class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
 
-    private val repositoryListAdapter = RepositoryListAdapter()
+    private val repositoryListAdapter = RepositoryListAdapter {
+        navigator.showRepositoryDetailsFragment(it)
+    }
     private lateinit var binding: UserInfoFragmentBinding
     private lateinit var viewModel: UserInfoViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
-        fun newInstance(): UserInfoFragment {
-            return UserInfoFragment()
+        private const val USER_NAME_KEY = "USER_NAME_KEY"
+
+        fun newInstance(userName: String?): UserInfoFragment {
+            return UserInfoFragment().also {
+                it.arguments = Bundle().apply {
+                    putString(USER_NAME_KEY, userName)
+                }
+            }
         }
     }
 
@@ -36,7 +45,14 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
         ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
         observeViewModel()
-        viewModel.loadUserInfo()
+        loadUserInfo()
+
+    }
+
+    private fun loadUserInfo() {
+        requireArguments().apply {
+            viewModel.loadUserInfo(getString(USER_NAME_KEY))
+        }
     }
 
     private fun setupRepositoryRecyclerView() {
@@ -59,6 +75,10 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
                         }
                         Error.NOT_FOUND_ERROR -> {
                             Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
+                        }
+                        Error.FORBIDDEN_ERROR -> {
+                            Toast.makeText(requireContext(), "forbidden error", Toast.LENGTH_LONG)
+                                .show()
                         }
                         Error.LOADING_ERROR -> {
                             Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)

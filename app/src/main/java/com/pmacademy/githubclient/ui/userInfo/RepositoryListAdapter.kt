@@ -1,25 +1,28 @@
 package com.pmacademy.githubclient.ui.userInfo
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pmacademy.githubclient.data.models.Repository
 import com.pmacademy.githubclient.databinding.RepositoryItemBinding
 
-class RepositoryListAdapter :
+class RepositoryListAdapter(private val callback: (Repository) -> Unit) :
     ListAdapter<Repository, RepositoryListAdapter.RepositoryViewHolder>(
         RepositoryDiffCallback()
     ) {
-    private val user:UserInfo? = null
-    class RepositoryViewHolder(private val binding: RepositoryItemBinding) :
+    class RepositoryViewHolder(
+        private val binding: RepositoryItemBinding,
+        private val callback: (Repository) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(repositoryUIModel: Repository) {
+        fun bind(repository: Repository) {
             with(binding) {
-                tvRepositoryName.text = repositoryUIModel.name
-                tvRepositoryDescription.text = repositoryUIModel.description
+                tvRepositoryName.text = repository.name
+                tvRepositoryDescription.text = repository.description
+                root.setOnClickListener {
+                    callback(repository)
+                }
             }
         }
     }
@@ -29,14 +32,10 @@ class RepositoryListAdapter :
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return RepositoryViewHolder(binding)
+        return RepositoryViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
         holder.bind(getItem(position))
-        val user : UserInfoFragment
-        holder.itemView.setOnClickListener {
-//            inject
-        }
     }
 }

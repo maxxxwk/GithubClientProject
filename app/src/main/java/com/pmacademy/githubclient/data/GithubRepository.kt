@@ -7,27 +7,47 @@ import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.issueDetails.IssueDetails
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
-import com.pmacademy.githubclient.ui.issueDetails.Error
+import com.pmacademy.githubclient.ui.Error
+import com.pmacademy.githubclient.utils.SharedPref
+import android.util.Base64
 import javax.inject.Inject
 
 class GithubRepository @Inject constructor(
-    private val githubDataService: GithubDataService
+    private val githubDataService: GithubDataService,
+    private val sharedPref: SharedPref
 ) {
 
-    fun getUserInfo(authToken: String): State<UserInfo, Error> {
+    fun getUserInfo(userName: String?): State<UserInfo, Error> {
+        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
         var user: User?
         var repositories: List<Repository>?
-        githubDataService.getUser(authToken).execute().let { userResponse ->
-            if (!userResponse.isSuccessful) {
-                return getErrorByResponseCode(userResponse.code())
+        if (userName == null) {
+            githubDataService.getUserByToken(authToken).execute().let { userResponse ->
+                if (!userResponse.isSuccessful) {
+                    return getErrorByResponseCode(userResponse.code())
+                }
+                user = userResponse.body()
             }
-            user = userResponse.body()
-        }
-        githubDataService.getRepositoriesByToken(authToken).execute().let { repositoriesResponse ->
-            if (!repositoriesResponse.isSuccessful) {
-                return getErrorByResponseCode(repositoriesResponse.code())
+            githubDataService.getRepositoriesByToken(authToken).execute()
+                .let { repositoriesResponse ->
+                    if (!repositoriesResponse.isSuccessful) {
+                        return getErrorByResponseCode(repositoriesResponse.code())
+                    }
+                    repositories = repositoriesResponse.body()
+                }
+        } else {
+            githubDataService.getUser(authToken, userName).execute().let { userResponse ->
+                if (!userResponse.isSuccessful) {
+                    return getErrorByResponseCode(userResponse.code())
+                }
+                user = userResponse.body()
             }
-            repositories = repositoriesResponse.body()
+            githubDataService.getUserRepositories(userName).execute().let { repositoriesResponse ->
+                if (!repositoriesResponse.isSuccessful) {
+                    return getErrorByResponseCode(repositoriesResponse.code())
+                }
+                repositories = repositoriesResponse.body()
+            }
         }
         user?.let { user ->
             repositories?.let { repositories ->
@@ -38,11 +58,11 @@ class GithubRepository @Inject constructor(
     }
 
     fun getIssueDetails(
-        authToken: String,
         repo: String,
         owner: String,
         number: Int
     ): State<IssueDetails, Error> {
+        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
         var issue: Issue?
         var comments: List<IssueComment>?
         githubDataService.getIssue(authToken, repo, owner, number).execute().let { issueResponse ->
@@ -66,8 +86,56 @@ class GithubRepository @Inject constructor(
         return State.Error(Error.LOADING_ERROR)
     }
 
+    fun getIssuesList(repo: String, owner: String): State<List<Issue>, Error> {
+        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        githubDataService.getIssues(authToken, repo, owner).execute().let { issuesResponse ->
+            if (!issuesResponse.isSuccessful) {
+                return getErrorByResponseCode(issuesResponse.code())
+            }
+            issuesResponse.body()?.let { issues ->
+                return State.Content(issues)
+            }
+        }
+        return State.Error(Error.LOADING_ERROR)
+    }
+
+    fun getContributors(
+        repo: String,
+        owner: String
+    ): State<List<User>, Error> {
+        githubDataService.getContributors(owner, repo).execute()
+            .let { contributorsResponse ->
+                if (!contributorsResponse.isSuccessful) {
+                    return getErrorByResponseCode(contributorsResponse.code())
+                }
+                contributorsResponse.body()?.let { contributors ->
+                    return State.Content(contributors)
+                }
+            }
+        return State.Error(Error.LOADING_ERROR)
+    }
+
+    fun getReadme(
+        repo: String,
+        owner: String
+    ): State<String, Error> {
+        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        githubDataService.getReadme(authToken, owner, repo).execute().let { readmeResponse ->
+            if (!readmeResponse.isSuccessful) {
+                return getErrorByResponseCode(readmeResponse.code())
+            }
+            readmeResponse.body()?.let { readme ->
+                return State.Content(
+                    Base64.decode(readme.content, 0).decodeToString()
+                )
+            }
+        }
+        return State.Error(Error.LOADING_ERROR)
+    }
+
     private fun <T> getErrorByResponseCode(code: Int): State<T, Error> = when (code) {
         401 -> State.Error(Error.UNAUTHORIZED_ERROR)
+        403 -> State.Error(Error.FORBIDDEN_ERROR)
         404 -> State.Error(Error.NOT_FOUND_ERROR)
         else -> State.Error(Error.LOADING_ERROR)
     }

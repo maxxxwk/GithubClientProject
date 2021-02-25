@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pmacademy.githubclient.data.GithubRepository
 import com.pmacademy.githubclient.ui.State
-import com.pmacademy.githubclient.ui.issueDetails.Error
+import com.pmacademy.githubclient.ui.Error
 import com.pmacademy.githubclient.utils.SharedPref
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -18,11 +18,11 @@ class UserInfoViewModel @Inject constructor(
     val stateLiveData: LiveData<State<UserInfo, Error>> = _userInfoStateLiveData
     private val executor = Executors.newSingleThreadExecutor()
 
-    fun loadUserInfo() {
+    fun loadUserInfo(userName: String?) {
         _userInfoStateLiveData.value = State.Loading
         executor.submit {
             _userInfoStateLiveData.postValue(
-                githubRepository.getUserInfo("${sharedPref.tokenType} ${sharedPref.accessToken}")
+                githubRepository.getUserInfo(userName)
             )
         }
     }

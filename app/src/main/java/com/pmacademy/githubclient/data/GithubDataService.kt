@@ -6,7 +6,13 @@ import retrofit2.http.*
 
 interface GithubDataService {
     @GET("/user")
-    fun getUser(@Header("Authorization") auth: String): Call<User>
+    fun getUserByToken(@Header("Authorization") auth: String): Call<User>
+
+    @GET("/users/{username}")
+    fun getUser(
+        @Header("Authorization") auth: String,
+        @Path("username") userName: String
+    ): Call<User>
 
     @GET("/users/{owner}/repos")
     fun getUserRepositories(@Path("owner") owner: String): Call<List<Repository>>
@@ -16,7 +22,6 @@ interface GithubDataService {
 
     @GET("/repos/{owner}/{repo}/contributors")
     fun getContributors(
-        @Header("Authorization") auth: String,
         @Path("owner") owner: String,
         @Path("repo") repo: String
     ): Call<List<User>>
@@ -24,12 +29,12 @@ interface GithubDataService {
     @GET("/emojis")
     fun getEmojis(@Header("Authorization") auth: String): Call<List<Emoji>>
 
-    @GET("/{owner}/{repo}/master/README.md")
+    @GET("repos/{owner}/{repo}/readme")
     fun getReadme(
         @Header("Authorization") auth: String,
         @Path("owner") owner: String,
         @Path("repo") repo: String
-    ): Call<String>
+    ): Call<Readme>
 
     @GET("/search/users")
     fun search(
