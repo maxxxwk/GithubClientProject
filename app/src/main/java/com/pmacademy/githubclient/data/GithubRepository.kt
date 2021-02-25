@@ -1,9 +1,6 @@
 package com.pmacademy.githubclient.data
 
-import com.pmacademy.githubclient.data.models.Issue
-import com.pmacademy.githubclient.data.models.IssueComment
-import com.pmacademy.githubclient.data.models.Repository
-import com.pmacademy.githubclient.data.models.User
+import com.pmacademy.githubclient.data.models.*
 import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.issueDetails.IssueDetails
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
@@ -70,5 +67,16 @@ class GithubRepository @Inject constructor(
         401 -> State.Error(Error.UNAUTHORIZED_ERROR)
         404 -> State.Error(Error.NOT_FOUND_ERROR)
         else -> State.Error(Error.LOADING_ERROR)
+    }
+
+    fun getContributors(authToken: String,repo: String,owner: String): State<User, Error> {
+        var contributor: List<User>?
+        githubDataService.getContributors(authToken,repo,owner).execute().let { contributorResponse ->
+            if (!contributorResponse.isSuccessful) {
+                return getErrorByResponseCode(contributorResponse.code())
+            }
+            contributor = contributorResponse.body()
+        }
+        return State.Error(Error.LOADING_ERROR)
     }
 }
