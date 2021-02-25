@@ -13,4 +13,22 @@
     <dimen name="authorization_button_marginTop">32dp</dimen>
     <dimen name="user_avatar_image_view_margin">16dp</dimen>
     <dimen name="user_name_text_view_margin">16dp</dimen>
+    <dimen name="issue_author_avatar_width">32dp</dimen>
+    <dimen name="issue_author_avatar_height">32dp</dimen>
+    <dimen name="issue_author_avatar_margin">16dp</dimen>
+    <dimen name="issue_author_name_margin">16dp</dimen>
+    <dimen name="issue_author_name_textSize">16sp</dimen>
+    <dimen name="issue_details_title_marginTop">16sp</dimen>
+    <dimen name="issue_details_title_textSize">24sp</dimen>
+    <dimen name="issue_details_content_wrapper_height">104dp</dimen>
+    <dimen name="issue_details_content_wrapper_marginHorizontal">16dp</dimen>
+    <dimen name="issue_details_content_wrapper_marginTop">16dp</dimen>
+    <dimen name="issue_details_content_textSize">16sp</dimen>
+    <dimen name="issue_comment_item_padding">16dp</dimen>
+    <dimen name="issue_commentator_name_marginLeft">16dp</dimen>
+    <dimen name="issue_commentator_name_textSize">16sp</dimen>
+    <dimen name="issue_commentator_avatar_width">16dp</dimen>
+    <dimen name="issue_commentator_avatar_height">16dp</dimen>
+    <dimen name="issue_comment_body_textSize">16sp</dimen>
+    <dimen name="issue_comment_body_marginTop">8dp</dimen>
 </resources>

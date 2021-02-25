@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivAuthorAvatar"
+        android:layout_width="@dimen/issue_author_avatar_width"
+        android:layout_height="@dimen/issue_author_avatar_height"
+        android:layout_margin="@dimen/issue_author_avatar_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/issue_author_name_margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/issue_author_name_textSize"
+        app:layout_constraintLeft_toRightOf="@id/ivAuthorAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Author`s name" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierAuthorInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="ivAuthorAvatar, tvAuthor" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvIssueTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/issue_details_title_marginTop"
+        android:textColor="@color/black"
+        android:textSize="@dimen/issue_details_title_textSize"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierAuthorInfo"
+        tools:text="Issue Title" />
+
+    <ScrollView
+        android:id="@+id/svIssueContentWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/issue_details_content_wrapper_height"
+        android:layout_marginHorizontal="@dimen/issue_details_content_wrapper_marginHorizontal"
+        android:layout_marginTop="@dimen/issue_details_content_wrapper_marginTop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvIssueTitle">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvIssueContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/issue_details_content_textSize"
+            tools:text="Issue content" />
+    </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvComments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/svIssueContentWrapper" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/issueDetailsGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvAuthor, ivAuthorAvatar, barrierAuthorInfo, svIssueContentWrapper, tvIssueTitle, rvComments" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.pmacademy.githubclient.data.GithubAuthService
 import com.pmacademy.githubclient.data.GithubDataService
 import com.pmacademy.githubclient.data.interceptors.AuthorizationInterceptor
+import com.pmacademy.githubclient.utils.SharedPref
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -63,6 +64,7 @@ class AppModule(private val context: Context) {
             .addInterceptor(AuthorizationInterceptor())
             .build()
     }
+
 
     @Provides
     @Singleton

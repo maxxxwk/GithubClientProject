@@ -2,6 +2,8 @@ package com.pmacademy.githubclient.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.pmacademy.githubclient.ui.issueDetails.IssueDetailsFragment
+import com.pmacademy.githubclient.ui.issueDetails.IssueDetailsViewModel
 import com.pmacademy.githubclient.ui.userInfo.UserInfoViewModel
 import com.pmacademy.githubclient.utils.viewModelFactory.ViewModelFactory
 import com.pmacademy.githubclient.utils.viewModelFactory.ViewModelKey
@@ -19,4 +21,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UserInfoViewModel::class)
     abstract fun userInfoViewModel(viewModel: UserInfoViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IssueDetailsViewModel::class)
+    abstract fun issueDetailsViewModel(viewModel: IssueDetailsViewModel): ViewModel
 }
