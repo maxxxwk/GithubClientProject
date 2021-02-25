@@ -7,8 +7,4 @@ data class UserInfo(
     val user: User,
     val repositories: List<Repository>
 
-) {
-    override fun toString(): String {
-        return "$user, $repositories)"
-    }
-}
+)

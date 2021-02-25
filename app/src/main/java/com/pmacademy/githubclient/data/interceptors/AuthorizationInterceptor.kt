@@ -1,7 +1,6 @@
 package com.pmacademy.githubclient.data.interceptors
 
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 
 class AuthorizationInterceptor : Interceptor {
