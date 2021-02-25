@@ -27,7 +27,9 @@ class ProjectDetailfFragment : BaseFragment(R.layout.project_fragment) {
 
     private val contributorsListAdapter = ProjectContributorsListAdapter()
     private lateinit var binding: ProjectFragmentBinding
+    private lateinit var projectIssue: ProjectIssueListAdapter
     private lateinit var viewModel: ProjectViewModel
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -44,7 +46,7 @@ class ProjectDetailfFragment : BaseFragment(R.layout.project_fragment) {
         ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[ProjectViewModel::class.java]
         observeViewModel()
-        viewModel.loadUserInfo("","")
+        viewModel.loadUserInfo("", "")
     }
 
     private fun setupRepositoryRecyclerView() {
@@ -52,9 +54,9 @@ class ProjectDetailfFragment : BaseFragment(R.layout.project_fragment) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contributorsListAdapter
         }
-        with(binding.rvIssue){
+        with(binding.rvIssue) {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = contributorsListAdapter
+            adapter = projectIssue
         }
     }
 
