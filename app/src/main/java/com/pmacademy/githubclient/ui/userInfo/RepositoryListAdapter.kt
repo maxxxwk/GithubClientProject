@@ -34,7 +34,6 @@ class RepositoryListAdapter :
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
         holder.bind(getItem(position))
-        val user : UserInfoFragment
         holder.itemView.setOnClickListener {
 //            inject
         }

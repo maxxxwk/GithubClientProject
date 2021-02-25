@@ -31,4 +31,14 @@
     <dimen name="issue_commentator_avatar_height">16dp</dimen>
     <dimen name="issue_comment_body_textSize">16sp</dimen>
     <dimen name="issue_comment_body_marginTop">8dp</dimen>
+    <dimen name="contributors">8dp</dimen>
+    <dimen name="contri_comment_item_padding">16dp</dimen>
+    <dimen name="contributor_item_padding">16dp</dimen>
+    <dimen name="contributor_name_marginLeft">16dp</dimen>
+    <dimen name="contributor_name_textSize">16sp</dimen>
+    <dimen name="contributor_avatar_width">16dp</dimen>
+    <dimen name="contributor_avatar_height">16dp</dimen>
+    <dimen name="contributor_body_textSize">16sp</dimen>
+    <dimen name="contributor_body_marginTop">8dp</dimen>
+
 </resources>
