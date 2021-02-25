@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/contri_comment_item_padding">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivContributorsAvatar"
+        android:layout_width="@dimen/contributor_avatar_width"
+        android:layout_height="@dimen/contributor_avatar_height"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvContributorsrName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/contributor_name_marginLeft"
+        android:textColor="@color/black"
+        android:textSize="@dimen/contributor_name_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/ivContributorsAvatar"
+        app:layout_constraintLeft_toRightOf="@id/ivContributorsAvatar"
+        app:layout_constraintTop_toTopOf="@id/ivContributorsAvatar"
+        tools:text="Contributors name" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierCommentatorInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="ivContributorsAvatar, tvContributorsrName" />
+</androidx.constraintlayout.widget.ConstraintLayout>
