@@ -12,6 +12,7 @@ import com.pmacademy.githubclient.databinding.UserInfoFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.ui.NavigationActivity
 import com.pmacademy.githubclient.ui.State
+import com.pmacademy.githubclient.ui.issueDetails.Error
 import javax.inject.Inject
 
 class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
@@ -46,20 +47,20 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
     }
 
     private fun observeViewModel() {
-        viewModel.userInfoStateLiveData.observe(viewLifecycleOwner, {
+        viewModel.stateLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is State.Loading -> showLoading()
                 is State.Content -> showUserInfo(it.data)
                 is State.Error -> {
                     when (it.error) {
-                        UserInfoError.UNAUTHORIZED_ERROR -> {
+                        Error.UNAUTHORIZED_ERROR -> {
                             Toast.makeText(requireContext(), "unauthorized", Toast.LENGTH_LONG)
                                 .show()
                         }
-                        UserInfoError.NOT_FOUND_ERROR -> {
+                        Error.NOT_FOUND_ERROR -> {
                             Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
                         }
-                        UserInfoError.LOADING_ERROR -> {
+                        Error.LOADING_ERROR -> {
                             Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)
                                 .show()
                         }

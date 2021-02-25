@@ -17,8 +17,10 @@ class NavigationActivity : AppCompatActivity() {
     val navigator: Navigator by lazy {
         Navigator(supportFragmentManager, R.id.container)
     }
+
     @Inject
     lateinit var sharedPref: SharedPref
+
     @Inject
     lateinit var githubAuthService: GithubAuthService
 

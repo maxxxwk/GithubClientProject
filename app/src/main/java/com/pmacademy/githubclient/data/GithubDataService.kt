@@ -21,13 +21,8 @@ interface GithubDataService {
         @Path("repo") repo: String
     ): Call<List<User>>
 
-    @GET("/avatar_url")
-    fun getAvatars(@Header("Authorization") auth: String): Call<String>
-
-
     @GET("/emojis")
     fun getEmojis(@Header("Authorization") auth: String): Call<List<Emoji>>
-
 
     @GET("/{owner}/{repo}/master/README.md")
     fun getReadme(
@@ -35,13 +30,6 @@ interface GithubDataService {
         @Path("owner") owner: String,
         @Path("repo") repo: String
     ): Call<String>
-
-    @GET("/repos/{owner}/{repo}/pulls")
-    fun getPulls(
-        @Header("Authorization") auth: String,
-        @Path("owner") owner: String,
-        @Path("repo") repo: String
-    ): Call<List<PullRequest>>
 
     @GET("/search/users")
     fun search(
@@ -55,25 +43,19 @@ interface GithubDataService {
         @Path("owner") owner: String
     ): Call<List<Issue>>
 
-    @GET("/repos/{owner}/{repo}/issues")
-    fun getRepositoryIssues(
+    @GET("/repos/{owner}/{repo}/issues/{number}")
+    fun getIssue(
         @Header("Authorization") auth: String,
-        @Path("owner") owner: String,
-        @Path("repo") repo: String
-    ): Call<ListRepositoryIssues>
-
-    @GET("/repos/{owner}/{repo}/issues/{issue_number}")
-    fun getRepositoryIssuesDeteils(
-        @Header("Authorization") auth: String,
-        @Path("owner") owner: String,
-        @Path("repo") repo: String
-    ): Call<ListRepositoryIssuesDetails>
-
-    @GET("/repos/{owner}/{repo}/issues/comments/{comment_id}")
-    fun getIssueComment(
-        @Header("Authorization") auth: String,
-        @Path("owner") owner: String,
         @Path("repo") repo: String,
-        @Path("comment_id") comment_id:Int
-    )
+        @Path("owner") owner: String,
+        @Path("number") number: Int
+    ): Call<Issue>
+
+    @GET("/repos/{owner}/{repo}/issues/{number}/comments")
+    fun getIssueComments(
+        @Header("Authorization") auth: String,
+        @Path("repo") repo: String,
+        @Path("owner") owner: String,
+        @Path("number") number: Int
+    ): Call<List<IssueComment>>
 }

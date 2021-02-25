@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Issue(
     @SerializedName("title") val title: String,
+    @SerializedName("body") val body: String,
     @SerializedName("user") val user: User,
     @SerializedName("number") val number: Int
 )
