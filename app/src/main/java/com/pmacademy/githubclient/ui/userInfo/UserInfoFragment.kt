@@ -22,7 +22,7 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
     private val repositoryListAdapter = RepositoryListAdapter {
         navigator.showRepositoryDetailsFragment(it)
     }
-    private val usersListAdapter = SearchUsersListAdapter{
+    private val usersListAdapter = SearchUsersListAdapter {
         navigator.showUserInfoFragment(it)
     }
     private lateinit var binding: UserInfoFragmentBinding
@@ -49,11 +49,15 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
         setupRepositoryRecyclerView()
         setupSearchUserRecyclerView()
         setupSearchView()
-        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
+        initVieModel()
         observeViewModel()
         loadUserInfo()
 
+    }
+
+    private fun initVieModel() {
+        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
     }
 
     private fun setupSearchView() {
@@ -113,18 +117,34 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
                 is State.Error -> {
                     when (it.error) {
                         Error.UNAUTHORIZED_ERROR -> {
-                            Toast.makeText(requireContext(), "unauthorized", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.unauthorized_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.NOT_FOUND_ERROR -> {
-                            Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.not_found_error_message),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                         Error.FORBIDDEN_ERROR -> {
-                            Toast.makeText(requireContext(), "forbidden error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.forbidden_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.LOADING_ERROR -> {
-                            Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.loading_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                     }

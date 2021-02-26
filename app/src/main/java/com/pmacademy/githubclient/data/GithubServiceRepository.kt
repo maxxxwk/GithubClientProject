@@ -4,18 +4,18 @@ import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.issueDetails.IssueDetails
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
 import com.pmacademy.githubclient.ui.Error
-import com.pmacademy.githubclient.utils.SharedPref
+import com.pmacademy.githubclient.utils.AuthTokenSharedPref
 import android.util.Base64
 import com.pmacademy.githubclient.data.models.*
 import javax.inject.Inject
 
-class GithubRepository @Inject constructor(
+class GithubServiceRepository @Inject constructor(
     private val githubDataService: GithubDataService,
-    private val sharedPref: SharedPref
+    private val authTokenSharedPref: AuthTokenSharedPref
 ) {
 
     fun getUserInfo(userName: String?): State<UserInfo, Error> {
-        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        val authToken = "${authTokenSharedPref.tokenType} ${authTokenSharedPref.accessToken}"
         var user: User?
         var repositories: List<Repository>?
         if (userName == null) {
@@ -59,7 +59,7 @@ class GithubRepository @Inject constructor(
         owner: String,
         number: Int
     ): State<IssueDetails, Error> {
-        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        val authToken = "${authTokenSharedPref.tokenType} ${authTokenSharedPref.accessToken}"
         var issue: Issue?
         var comments: List<IssueComment>?
         githubDataService.getIssue(authToken, repo, owner, number).execute().let { issueResponse ->
@@ -84,7 +84,7 @@ class GithubRepository @Inject constructor(
     }
 
     fun getIssuesList(repo: String, owner: String): State<List<Issue>, Error> {
-        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        val authToken = "${authTokenSharedPref.tokenType} ${authTokenSharedPref.accessToken}"
         githubDataService.getIssues(authToken, repo, owner).execute().let { issuesResponse ->
             if (!issuesResponse.isSuccessful) {
                 return getErrorByResponseCode(issuesResponse.code())
@@ -116,7 +116,7 @@ class GithubRepository @Inject constructor(
         repo: String,
         owner: String
     ): State<String, Error> {
-        val authToken = "${sharedPref.tokenType} ${sharedPref.accessToken}"
+        val authToken = "${authTokenSharedPref.tokenType} ${authTokenSharedPref.accessToken}"
         githubDataService.getReadme(authToken, owner, repo).execute().let { readmeResponse ->
             if (!readmeResponse.isSuccessful) {
                 return getErrorByResponseCode(readmeResponse.code())

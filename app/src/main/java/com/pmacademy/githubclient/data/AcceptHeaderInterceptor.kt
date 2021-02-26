@@ -1,9 +1,9 @@
-package com.pmacademy.githubclient.data.interceptors
+package com.pmacademy.githubclient.data
 
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthorizationInterceptor : Interceptor {
+class AcceptHeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.run {
             val newRequest = chain.request().newBuilder()

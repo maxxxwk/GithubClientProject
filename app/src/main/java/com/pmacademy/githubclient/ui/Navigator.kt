@@ -1,6 +1,5 @@
 package com.pmacademy.githubclient.ui
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
 import com.pmacademy.githubclient.data.models.Issue

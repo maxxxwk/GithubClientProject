@@ -10,12 +10,14 @@ import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.databinding.UsersListItemBinding
 
 class SearchUsersListAdapter(
-    private val callback: (String) -> Unit
+    private val onClickItemCallback: (String) -> Unit
 ) :
     ListAdapter<User, SearchUsersListAdapter.UserViewHolder>(SearchUsersDiffCallback()) {
 
-    class UserViewHolder(private val binding: UsersListItemBinding,
-                         private val callback: (String) -> Unit) :
+    class UserViewHolder(
+        private val binding: UsersListItemBinding,
+        private val onClickItemCallback: (String) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             with(binding) {
@@ -25,7 +27,7 @@ class SearchUsersListAdapter(
                     .into(ivAvatar)
                 tvName.text = user.login
                 root.setOnClickListener {
-                    callback(user.login)
+                    onClickItemCallback(user.login)
                 }
             }
         }
@@ -37,7 +39,7 @@ class SearchUsersListAdapter(
             parent,
             false
         )
-        return UserViewHolder(binding, callback)
+        return UserViewHolder(binding, onClickItemCallback)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {

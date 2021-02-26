@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.pmacademy.githubclient.App
 import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.models.Issue
-import com.pmacademy.githubclient.data.models.Repository
 import com.pmacademy.githubclient.databinding.IssueDetailsFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.ui.Error
@@ -28,15 +27,15 @@ class IssueDetailsFragment : BaseFragment(R.layout.issue_details_fragment) {
 
     companion object {
         private const val ISSUE_NUMBER_KEY = "ISSUE_NUMBER_KEY"
-        private const val REPOS_KEY = "REPOS_KEY"
-        private const val OWNER_KEY = "OWNER_KEY"
+        private const val REPOS_NAME_KEY = "REPOS_NAME_KEY"
+        private const val OWNER_NAME_KEY = "OWNER_NAME_KEY"
 
         fun newInstance(issue: Issue, reposName: String, reposOwner: String): IssueDetailsFragment {
             return IssueDetailsFragment().also {
                 it.arguments = Bundle().apply {
                     putInt(ISSUE_NUMBER_KEY, issue.number)
-                    putString(REPOS_KEY, reposName)
-                    putString(OWNER_KEY, reposOwner)
+                    putString(REPOS_NAME_KEY, reposName)
+                    putString(OWNER_NAME_KEY, reposOwner)
                 }
             }
         }
@@ -46,18 +45,22 @@ class IssueDetailsFragment : BaseFragment(R.layout.issue_details_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = IssueDetailsFragmentBinding.bind(view)
         setupRecyclerView()
-        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[IssueDetailsViewModel::class.java]
+        initViewModel()
         observeViewModel()
         loadIssueDetails()
     }
 
+    private fun initViewModel() {
+        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory)[IssueDetailsViewModel::class.java]
+    }
+
     private fun loadIssueDetails() {
         requireArguments().let {
-            val number = it.getInt(ISSUE_NUMBER_KEY, 0)
-            val repos = it.getString(REPOS_KEY, "")
-            val owner = it.getString(OWNER_KEY, "")
-            viewModel.loadIssueDetails(repos, owner, number)
+            val issueNumber = it.getInt(ISSUE_NUMBER_KEY, 0)
+            val reposName = it.getString(REPOS_NAME_KEY, "")
+            val ownerName = it.getString(OWNER_NAME_KEY, "")
+            viewModel.loadIssueDetails(reposName, ownerName, issueNumber)
         }
     }
 
@@ -69,18 +72,34 @@ class IssueDetailsFragment : BaseFragment(R.layout.issue_details_fragment) {
                 is State.Error -> {
                     when (it.error) {
                         Error.UNAUTHORIZED_ERROR -> {
-                            Toast.makeText(requireContext(), "unauthorized", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.unauthorized_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.NOT_FOUND_ERROR -> {
-                            Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.not_found_error_message),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                         Error.FORBIDDEN_ERROR -> {
-                            Toast.makeText(requireContext(), "forbidden error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.forbidden_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.LOADING_ERROR -> {
-                            Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.loading_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                     }

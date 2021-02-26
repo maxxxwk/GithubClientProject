@@ -10,13 +10,13 @@ import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.databinding.UsersListItemBinding
 
 class ContributorsListAdapter(
-    private val callback: (String) -> Unit
+    private val onClickItemCallback: (String) -> Unit
 ) :
     ListAdapter<User, ContributorsListAdapter.ContributorViewHolder>(ContributorDiffCallback()) {
 
     class ContributorViewHolder(
         private val binding: UsersListItemBinding,
-        private val callback: (String) -> Unit
+        private val onClickItemCallback: (String) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(contributor: User) {
@@ -27,7 +27,7 @@ class ContributorsListAdapter(
                     .into(ivAvatar)
                 tvName.text = contributor.login
                 root.setOnClickListener {
-                    callback(contributor.login)
+                    onClickItemCallback(contributor.login)
                 }
             }
         }
@@ -39,7 +39,7 @@ class ContributorsListAdapter(
             parent,
             false
         )
-        return ContributorViewHolder(binding, callback)
+        return ContributorViewHolder(binding, onClickItemCallback)
     }
 
     override fun onBindViewHolder(holder: ContributorViewHolder, position: Int) {

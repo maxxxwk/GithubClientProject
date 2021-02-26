@@ -44,17 +44,21 @@ class RepositoryDetailsFragment : BaseFragment(R.layout.repository_details_fragm
             tvRepositoryName.text = reposName
             tvRepositoryDescription.text = reposDescription
             val reposOwnerName = requireArguments().getString(REPOS_OWNER_NAME_KEY, "")
-
-            val issueListFragment = IssuesListFragment.newInstance(reposName, reposOwnerName)
-            val contributorListFragment =
-                ContributorsListFragment.newInstance(reposName, reposOwnerName)
-            val readmeFragment = ReadmeFragment.newInstance(reposName, reposOwnerName)
+            val fragments = listOf(
+                IssuesListFragment.newInstance(reposName, reposOwnerName),
+                ContributorsListFragment.newInstance(reposName, reposOwnerName),
+                ReadmeFragment.newInstance(reposName, reposOwnerName)
+            )
             vpDetails.adapter =
                 ViewPagerAdapter(
                     this@RepositoryDetailsFragment,
-                    listOf(issueListFragment, contributorListFragment, readmeFragment)
+                    fragments
                 )
-            val tabNames = listOf("Issues", "Contributors", "README.md")
+            val tabNames = listOf(
+                getString(R.string.issues_tab),
+                getString(R.string.contributors_tab),
+                getString(R.string.readme_tab)
+            )
             TabLayoutMediator(tlTabs, vpDetails) { tab, position ->
                 tab.text = tabNames[position]
             }.attach()

@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pmacademy.githubclient.data.models.Repository
 import com.pmacademy.githubclient.databinding.RepositoryItemBinding
 
-class RepositoryListAdapter(private val callback: (Repository) -> Unit) :
+class RepositoryListAdapter(private val onClickItemCallback: (Repository) -> Unit) :
     ListAdapter<Repository, RepositoryListAdapter.RepositoryViewHolder>(
         RepositoryDiffCallback()
     ) {
     class RepositoryViewHolder(
         private val binding: RepositoryItemBinding,
-        private val callback: (Repository) -> Unit
+        private val onClickItemCallback: (Repository) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repository: Repository) {
@@ -21,7 +21,7 @@ class RepositoryListAdapter(private val callback: (Repository) -> Unit) :
                 tvRepositoryName.text = repository.name
                 tvRepositoryDescription.text = repository.description
                 root.setOnClickListener {
-                    callback(repository)
+                    onClickItemCallback(repository)
                 }
             }
         }
@@ -32,7 +32,7 @@ class RepositoryListAdapter(private val callback: (Repository) -> Unit) :
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return RepositoryViewHolder(binding, callback)
+        return RepositoryViewHolder(binding, onClickItemCallback)
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {

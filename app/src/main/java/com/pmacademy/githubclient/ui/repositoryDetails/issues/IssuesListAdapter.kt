@@ -9,24 +9,20 @@ import com.pmacademy.githubclient.data.models.Repository
 import com.pmacademy.githubclient.databinding.IssuesListItemBinding
 
 class IssuesListAdapter(
-    private val repos: String,
-    private val owner: String,
-    private val callback: (issue: Issue) -> Unit
+    private val onClickItemCallback: (issue: Issue) -> Unit
 ) :
     ListAdapter<Issue, IssuesListAdapter.IssueViewHolder>(IssueDiffCallback()) {
 
     class IssueViewHolder(
         private val binding: IssuesListItemBinding,
-        private val callback: (issue: Issue) -> Unit,
-        private val repos: String,
-        private val owner: String
+        private val onClickItemCallback: (issue: Issue) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(issue: Issue) {
             with(binding) {
                 tvIssueName.text = issue.title
                 root.setOnClickListener {
-                    callback(issue)
+                    onClickItemCallback(issue)
                 }
             }
         }
@@ -38,7 +34,7 @@ class IssuesListAdapter(
             parent,
             false
         )
-        return IssueViewHolder(binding, callback, repos, owner)
+        return IssueViewHolder(binding, onClickItemCallback)
     }
 
     override fun onBindViewHolder(holder: IssueViewHolder, position: Int) {

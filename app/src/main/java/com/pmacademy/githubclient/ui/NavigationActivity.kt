@@ -1,17 +1,14 @@
 package com.pmacademy.githubclient.ui
 
-import android.app.SearchManager
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.pmacademy.githubclient.App
 import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.GithubAuthService
 import com.pmacademy.githubclient.data.models.AuthToken
 import com.pmacademy.githubclient.databinding.ActivityNavigationBinding
 import com.pmacademy.githubclient.utils.GithubUtils
-import com.pmacademy.githubclient.utils.SharedPref
+import com.pmacademy.githubclient.utils.AuthTokenSharedPref
 import javax.inject.Inject
 
 class NavigationActivity : AppCompatActivity() {
@@ -22,7 +19,7 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var sharedPref: SharedPref
+    lateinit var authTokenSharedPref: AuthTokenSharedPref
 
     @Inject
     lateinit var githubAuthService: GithubAuthService
@@ -38,7 +35,7 @@ class NavigationActivity : AppCompatActivity() {
         super.onResume()
         val code = GithubUtils.getCodeFromUri(intent.data)
         if (code == null) {
-            if (sharedPref.accessToken == "") {
+            if (authTokenSharedPref.accessToken == "") {
                 navigator.showAuthFragment()
             } else {
                 navigator.showUserInfoFragment(null)
@@ -46,8 +43,8 @@ class NavigationActivity : AppCompatActivity() {
         } else {
             Thread {
                 getAuthToken(code)?.let { authToken ->
-                    sharedPref.accessToken = authToken.accessToken
-                    sharedPref.tokenType = authToken.tokenType
+                    authTokenSharedPref.accessToken = authToken.accessToken
+                    authTokenSharedPref.tokenType = authToken.tokenType
                     navigator.showUserInfoFragment(null)
                 }
             }.start()
@@ -60,5 +57,16 @@ class NavigationActivity : AppCompatActivity() {
             GithubUtils.clientSecret,
             code
         ).execute().body()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            if (authTokenSharedPref.tokenType.isNullOrEmpty() && authTokenSharedPref.tokenType.isNullOrEmpty()) {
+                navigator.showAuthFragment()
+            } else {
+                navigator.showUserInfoFragment(null)
+            }
+        }
     }
 }

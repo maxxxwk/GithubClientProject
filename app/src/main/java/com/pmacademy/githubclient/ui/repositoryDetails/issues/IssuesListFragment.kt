@@ -23,14 +23,14 @@ class IssuesListFragment : BaseFragment(R.layout.issues_list_fragment) {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
-        private const val REPOS_KEY = "REPOS_KEY"
-        private const val OWNER_KEY = "OWNER_KEY"
+        private const val REPOS_NAME_KEY = "REPOS_NAME_KEY"
+        private const val OWNER_NAME_KEY = "OWNER_NAME_KEY"
 
         fun newInstance(reposName: String, reposOwner: String): IssuesListFragment {
             return IssuesListFragment().also {
                 it.arguments = Bundle().apply {
-                    putString(REPOS_KEY, reposName)
-                    putString(OWNER_KEY, reposOwner)
+                    putString(REPOS_NAME_KEY, reposName)
+                    putString(OWNER_NAME_KEY, reposOwner)
                 }
             }
         }
@@ -41,17 +41,21 @@ class IssuesListFragment : BaseFragment(R.layout.issues_list_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = IssuesListFragmentBinding.bind(view)
         setupRecyclerView()
-        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[IssuesListViewModel::class.java]
+        initViewModel()
         observeViewModel()
         loadIssues()
     }
 
+    private fun initViewModel() {
+        ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory)[IssuesListViewModel::class.java]
+    }
+
     private fun loadIssues() {
         with(requireArguments()) {
-            val repos = getString(REPOS_KEY, "")
-            val owner = getString(OWNER_KEY, "")
-            viewModel.loadIssues(repos, owner)
+            val reposName = getString(REPOS_NAME_KEY, "")
+            val ownerName = getString(OWNER_NAME_KEY, "")
+            viewModel.loadIssues(reposName, ownerName)
         }
     }
 
@@ -59,10 +63,10 @@ class IssuesListFragment : BaseFragment(R.layout.issues_list_fragment) {
         with(binding.rvIssues) {
             layoutManager = LinearLayoutManager(requireContext())
             with(requireArguments()) {
-                val repos = getString(REPOS_KEY, "")
-                val owner = getString(OWNER_KEY, "")
-                adapter = IssuesListAdapter(repos, owner) { issue ->
-                    navigator.showIssueDetailsFragment(issue, repos, owner)
+                val reposName = getString(REPOS_NAME_KEY, "")
+                val ownerName = getString(OWNER_NAME_KEY, "")
+                adapter = IssuesListAdapter { issue ->
+                    navigator.showIssueDetailsFragment(issue, reposName, ownerName)
                 }
             }
         }
@@ -76,18 +80,34 @@ class IssuesListFragment : BaseFragment(R.layout.issues_list_fragment) {
                 is State.Error -> {
                     when (it.error) {
                         Error.UNAUTHORIZED_ERROR -> {
-                            Toast.makeText(requireContext(), "unauthorized", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.unauthorized_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.NOT_FOUND_ERROR -> {
-                            Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.not_found_error_message),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                         Error.FORBIDDEN_ERROR -> {
-                            Toast.makeText(requireContext(), "forbidden error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.forbidden_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.LOADING_ERROR -> {
-                            Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.loading_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                     }
