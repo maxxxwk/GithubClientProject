@@ -2,8 +2,11 @@ package com.pmacademy.githubclient.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.pmacademy.githubclient.ui.issueDetails.IssueDetailsFragment
 import com.pmacademy.githubclient.ui.issueDetails.IssueDetailsViewModel
+import com.pmacademy.githubclient.ui.repositoryDetails.contributtors.ContributorsListFragment
+import com.pmacademy.githubclient.ui.repositoryDetails.contributtors.ContributorsListViewModel
+import com.pmacademy.githubclient.ui.repositoryDetails.issues.IssuesListViewModel
+import com.pmacademy.githubclient.ui.repositoryDetails.readme.ReadmeViewModel
 import com.pmacademy.githubclient.ui.userInfo.UserInfoViewModel
 import com.pmacademy.githubclient.utils.viewModelFactory.ViewModelFactory
 import com.pmacademy.githubclient.utils.viewModelFactory.ViewModelKey
@@ -26,4 +29,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(IssueDetailsViewModel::class)
     abstract fun issueDetailsViewModel(viewModel: IssueDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IssuesListViewModel::class)
+    abstract fun issuesListViewModel(viewModel: IssuesListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ContributorsListViewModel::class)
+    abstract fun contributorsViewModel(viewModel: ContributorsListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReadmeViewModel::class)
+    abstract fun readmeViewModel(viewModel: ReadmeViewModel): ViewModel
 }

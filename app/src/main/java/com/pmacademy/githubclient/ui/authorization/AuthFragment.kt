@@ -8,10 +8,11 @@ import com.pmacademy.githubclient.databinding.AuthorizationFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.utils.GithubUtils
 
-class AuthFragment private constructor(): BaseFragment(R.layout.authorization_fragment) {
+class AuthFragment private constructor() : BaseFragment(R.layout.authorization_fragment) {
 
     private lateinit var binding: AuthorizationFragmentBinding
-    companion object{
+
+    companion object {
         fun newInstance(): AuthFragment {
             return AuthFragment()
         }
@@ -21,10 +22,12 @@ class AuthFragment private constructor(): BaseFragment(R.layout.authorization_fr
         super.onViewCreated(view, savedInstanceState)
         binding = AuthorizationFragmentBinding.bind(view)
         binding.btnAuth.setOnClickListener {
-            requireContext().startActivity(Intent(
-                Intent.ACTION_VIEW,
-                GithubUtils.buildAuthGitHubUrl()
-            ))
+            requireContext().startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    GithubUtils.buildAuthGitHubUrl()
+                )
+            )
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.pmacademy.githubclient.ui.userInfo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,20 +14,32 @@ import com.pmacademy.githubclient.databinding.UserInfoFragmentBinding
 import com.pmacademy.githubclient.ui.BaseFragment
 import com.pmacademy.githubclient.ui.NavigationActivity
 import com.pmacademy.githubclient.ui.State
-import com.pmacademy.githubclient.ui.issueDetails.Error
+import com.pmacademy.githubclient.ui.Error
 import javax.inject.Inject
 
 class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
 
-    private val repositoryListAdapter = RepositoryListAdapter()
+    private val repositoryListAdapter = RepositoryListAdapter {
+        navigator.showRepositoryDetailsFragment(it)
+    }
+    private val usersListAdapter = SearchUsersListAdapter {
+        navigator.showUserInfoFragment(it)
+    }
     private lateinit var binding: UserInfoFragmentBinding
     private lateinit var viewModel: UserInfoViewModel
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
-        fun newInstance(): UserInfoFragment {
-            return UserInfoFragment()
+        private const val USER_NAME_KEY = "USER_NAME_KEY"
+
+        fun newInstance(userName: String?): UserInfoFragment {
+            return UserInfoFragment().also {
+                it.arguments = Bundle().apply {
+                    putString(USER_NAME_KEY, userName)
+                }
+            }
         }
     }
 
@@ -33,10 +47,59 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = UserInfoFragmentBinding.bind(view)
         setupRepositoryRecyclerView()
+        setupSearchUserRecyclerView()
+        setupSearchView()
+        initVieModel()
+        observeViewModel()
+        loadUserInfo()
+
+    }
+
+    private fun initVieModel() {
         ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
-        observeViewModel()
-        viewModel.loadUserInfo()
+    }
+
+    private fun setupSearchView() {
+        with(binding) {
+            svSearch.setOnSearchClickListener {
+                rvUsers.visibility = View.VISIBLE
+            }
+            svSearch.setOnCloseListener {
+                rvUsers.visibility = View.GONE
+                usersListAdapter.submitList(emptyList())
+                false
+            }
+            svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (!query.isNullOrEmpty()) {
+                        viewModel.searchUsers(query)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (!newText.isNullOrEmpty()) {
+                        viewModel.searchUsers(newText)
+                    }
+                    return true
+                }
+
+            })
+        }
+    }
+
+    private fun loadUserInfo() {
+        requireArguments().apply {
+            viewModel.loadUserInfo(getString(USER_NAME_KEY))
+        }
+    }
+
+    private fun setupSearchUserRecyclerView() {
+        with(binding.rvUsers) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = usersListAdapter
+        }
     }
 
     private fun setupRepositoryRecyclerView() {
@@ -54,19 +117,42 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
                 is State.Error -> {
                     when (it.error) {
                         Error.UNAUTHORIZED_ERROR -> {
-                            Toast.makeText(requireContext(), "unauthorized", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.unauthorized_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                         Error.NOT_FOUND_ERROR -> {
-                            Toast.makeText(requireContext(), "not found", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.not_found_error_message),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        Error.FORBIDDEN_ERROR -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.forbidden_error_message),
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
                         }
                         Error.LOADING_ERROR -> {
-                            Toast.makeText(requireContext(), "loading error", Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.loading_error_message),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                         }
                     }
                 }
             }
+        })
+        viewModel.searchUsersStateLiveData.observe(viewLifecycleOwner, {
+            usersListAdapter.submitList(it)
         })
     }
 

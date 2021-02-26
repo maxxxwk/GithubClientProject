@@ -5,10 +5,10 @@ import android.net.Uri
 object GithubUtils {
     const val clientId = "Iv1.579fd42febefaf65"
     const val clientSecret = "680cbb713513d806fe83fe305adfb5d00167e674"
-    const val redirectUrl = "githubclientproject://callback"
-    const val scopes = "repo, user"
-    const val schema = "https"
-    const val githubHost = "github.com"
+    private const val redirectUrl = "githubclientproject://callback"
+    private const val scopes = "repo, user"
+    private const val schema = "https"
+    private const val githubHost = "github.com"
 
     fun buildAuthGitHubUrl(): Uri {
         return Uri.Builder()

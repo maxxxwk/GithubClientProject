@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SharedPref @Inject constructor(context: Context) {
+class AuthTokenSharedPref @Inject constructor(context: Context) {
     companion object {
         private const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY"
         private const val TOKEN_TYPE_KEY = "TOKEN_TYPE_KEY"

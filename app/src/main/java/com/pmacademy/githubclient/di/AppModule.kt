@@ -5,11 +5,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.pmacademy.githubclient.data.GithubAuthService
 import com.pmacademy.githubclient.data.GithubDataService
-import com.pmacademy.githubclient.data.interceptors.AuthorizationInterceptor
-import com.pmacademy.githubclient.utils.SharedPref
+import com.pmacademy.githubclient.data.AcceptHeaderInterceptor
 import dagger.Module
 import dagger.Provides
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -61,7 +59,7 @@ class AppModule(private val context: Context) {
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(AuthorizationInterceptor())
+            .addInterceptor(AcceptHeaderInterceptor())
             .build()
     }
 
@@ -81,8 +79,8 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideAuthorizationInterceptor(retrofit: Retrofit): AuthorizationInterceptor {
-        return retrofit.create(AuthorizationInterceptor::class.java)
+    fun provideAuthorizationInterceptor(retrofit: Retrofit): AcceptHeaderInterceptor {
+        return retrofit.create(AcceptHeaderInterceptor::class.java)
     }
 
 }
