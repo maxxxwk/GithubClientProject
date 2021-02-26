@@ -1,15 +1,12 @@
 package com.pmacademy.githubclient.data
 
-import com.pmacademy.githubclient.data.models.Issue
-import com.pmacademy.githubclient.data.models.IssueComment
-import com.pmacademy.githubclient.data.models.Repository
-import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.ui.State
 import com.pmacademy.githubclient.ui.issueDetails.IssueDetails
 import com.pmacademy.githubclient.ui.userInfo.UserInfo
 import com.pmacademy.githubclient.ui.Error
 import com.pmacademy.githubclient.utils.SharedPref
 import android.util.Base64
+import com.pmacademy.githubclient.data.models.*
 import javax.inject.Inject
 
 class GithubRepository @Inject constructor(
@@ -131,6 +128,18 @@ class GithubRepository @Inject constructor(
             }
         }
         return State.Error(Error.LOADING_ERROR)
+    }
+
+    fun searchUsers(q: String): List<User> {
+        githubDataService.search(q).execute().let { searchResponse ->
+            if (!searchResponse.isSuccessful) {
+                return emptyList()
+            }
+            searchResponse.body()?.let { searchUserResponse ->
+                return searchUserResponse.items
+            }
+        }
+        return emptyList()
     }
 
     private fun <T> getErrorByResponseCode(code: Int): State<T, Error> = when (code) {

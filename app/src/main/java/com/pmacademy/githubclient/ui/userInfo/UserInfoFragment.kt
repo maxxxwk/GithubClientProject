@@ -3,6 +3,7 @@ package com.pmacademy.githubclient.ui.userInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +22,12 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
     private val repositoryListAdapter = RepositoryListAdapter {
         navigator.showRepositoryDetailsFragment(it)
     }
+    private val usersListAdapter = SearchUsersListAdapter{
+        navigator.showUserInfoFragment(it)
+    }
     private lateinit var binding: UserInfoFragmentBinding
     private lateinit var viewModel: UserInfoViewModel
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -42,6 +47,8 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = UserInfoFragmentBinding.bind(view)
         setupRepositoryRecyclerView()
+        setupSearchUserRecyclerView()
+        setupSearchView()
         ((requireActivity() as NavigationActivity).application as App).daggerComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[UserInfoViewModel::class.java]
         observeViewModel()
@@ -49,9 +56,45 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
 
     }
 
+    private fun setupSearchView() {
+        with(binding) {
+            svSearch.setOnSearchClickListener {
+                rvUsers.visibility = View.VISIBLE
+            }
+            svSearch.setOnCloseListener {
+                rvUsers.visibility = View.GONE
+                usersListAdapter.submitList(emptyList())
+                false
+            }
+            svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (!query.isNullOrEmpty()) {
+                        viewModel.searchUsers(query)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (!newText.isNullOrEmpty()) {
+                        viewModel.searchUsers(newText)
+                    }
+                    return true
+                }
+
+            })
+        }
+    }
+
     private fun loadUserInfo() {
         requireArguments().apply {
             viewModel.loadUserInfo(getString(USER_NAME_KEY))
+        }
+    }
+
+    private fun setupSearchUserRecyclerView() {
+        with(binding.rvUsers) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = usersListAdapter
         }
     }
 
@@ -87,6 +130,9 @@ class UserInfoFragment : BaseFragment(R.layout.user_info_fragment) {
                     }
                 }
             }
+        })
+        viewModel.searchUsersStateLiveData.observe(viewLifecycleOwner, {
+            usersListAdapter.submitList(it)
         })
     }
 

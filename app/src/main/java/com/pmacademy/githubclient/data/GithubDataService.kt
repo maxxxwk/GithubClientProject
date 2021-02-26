@@ -26,9 +26,6 @@ interface GithubDataService {
         @Path("repo") repo: String
     ): Call<List<User>>
 
-    @GET("/emojis")
-    fun getEmojis(@Header("Authorization") auth: String): Call<List<Emoji>>
-
     @GET("repos/{owner}/{repo}/readme")
     fun getReadme(
         @Header("Authorization") auth: String,
@@ -38,8 +35,8 @@ interface GithubDataService {
 
     @GET("/search/users")
     fun search(
-        @Query("q") q: Call<List<SearchUser>>
-    )
+        @Query("q") q: String
+    ): Call<SearchUserResponse>
 
     @GET("/repos/{owner}/{repo}/issues")
     fun getIssues(

@@ -1,4 +1,4 @@
-package com.pmacademy.githubclient.ui.repositoryDetails.contributtors
+package com.pmacademy.githubclient.ui.userInfo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,40 +9,38 @@ import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.models.User
 import com.pmacademy.githubclient.databinding.UsersListItemBinding
 
-class ContributorsListAdapter(
+class SearchUsersListAdapter(
     private val callback: (String) -> Unit
 ) :
-    ListAdapter<User, ContributorsListAdapter.ContributorViewHolder>(ContributorDiffCallback()) {
+    ListAdapter<User, SearchUsersListAdapter.UserViewHolder>(SearchUsersDiffCallback()) {
 
-    class ContributorViewHolder(
-        private val binding: UsersListItemBinding,
-        private val callback: (String) -> Unit
-    ) :
+    class UserViewHolder(private val binding: UsersListItemBinding,
+                         private val callback: (String) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(contributor: User) {
+        fun bind(user: User) {
             with(binding) {
                 Glide.with(binding.root.context)
-                    .load(contributor.avatar_url)
+                    .load(user.avatar_url)
                     .placeholder(R.drawable.loading_placeholder)
                     .into(ivAvatar)
-                tvName.text = contributor.login
+                tvName.text = user.login
                 root.setOnClickListener {
-                    callback(contributor.login)
+                    callback(user.login)
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContributorViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = UsersListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return ContributorViewHolder(binding, callback)
+        return UserViewHolder(binding, callback)
     }
 
-    override fun onBindViewHolder(holder: ContributorViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }

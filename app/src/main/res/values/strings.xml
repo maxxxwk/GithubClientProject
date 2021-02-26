@@ -4,4 +4,5 @@
     <string name="authorization_title">Authorization</string>
     <string name="authorization_button_text">Log in</string>
     <string name="no_issues_message_text">No issues</string>
+    <string name="search_hint">Enter user name</string>
 </resources>

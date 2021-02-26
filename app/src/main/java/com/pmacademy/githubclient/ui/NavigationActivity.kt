@@ -1,7 +1,10 @@
 package com.pmacademy.githubclient.ui
 
+import android.app.SearchManager
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.pmacademy.githubclient.App
 import com.pmacademy.githubclient.R
 import com.pmacademy.githubclient.data.GithubAuthService

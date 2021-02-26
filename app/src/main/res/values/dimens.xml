@@ -38,11 +38,14 @@
     <dimen name="repository_details_tab_layout_marginVertical">8dp</dimen>
     <dimen name="issue_item_padding">16dp</dimen>
     <dimen name="contributors_list_item_padding">16dp</dimen>
-    <dimen name="contributor_avatar_margin">16dp</dimen>
-    <dimen name="contributor_avatar_width">40dp</dimen>
-    <dimen name="contributor_avatar_height">40dp</dimen>
-    <dimen name="contributor_name_margin">16dp</dimen>
+    <dimen name="user_item_avatar_margin">16dp</dimen>
+    <dimen name="user_item_avatar_width">40dp</dimen>
+    <dimen name="user_item_avatar_height">40dp</dimen>
+    <dimen name="user_item_name_margin">16dp</dimen>
     <dimen name="no_issues_message_text_textSize">24sp</dimen>
     <dimen name="readme_fragment_padding">16dp</dimen>
     <dimen name="readme_text_textSize">24sp</dimen>
+    <dimen name="search_button_width">64dp</dimen>
+    <dimen name="search_button_height">64dp</dimen>
+    <dimen name="search_button_margin">32dp</dimen>
 </resources>

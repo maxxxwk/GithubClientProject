@@ -6,21 +6,21 @@
     android:padding="@dimen/contributors_list_item_padding">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivContributorAvatar"
-        android:layout_width="@dimen/contributor_avatar_width"
-        android:layout_height="@dimen/contributor_avatar_height"
-        android:layout_margin="@dimen/contributor_avatar_margin"
+        android:id="@+id/ivAvatar"
+        android:layout_width="@dimen/user_item_avatar_width"
+        android:layout_height="@dimen/user_item_avatar_height"
+        android:layout_margin="@dimen/user_item_avatar_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvContributorName"
+        android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/contributor_name_margin"
+        android:layout_margin="@dimen/user_item_name_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/ivContributorAvatar"
+        app:layout_constraintLeft_toRightOf="@id/ivAvatar"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
